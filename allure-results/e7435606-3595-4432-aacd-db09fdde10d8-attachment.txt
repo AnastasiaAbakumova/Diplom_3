@@ -1,0 +1,9 @@
+DEBUG: localStorage.accessToken: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ZGE1ZjJhOWVkMjgwMDAxYjZhZGQ5ZiIsImlhdCI6MTc1OTM5OTg2MSwiZXhwIjoxNzU5NDAxMDYxfQ.KJCflXur1IMItdsopJ5707hS_t3MK3uTgve1PVq-_S8
+DEBUG: localStorage.refreshToken: 30165e52d26c579d6d8f4c9b95df2606a2496c91b37446190f34d0577e3eb51c4281241d2d8cc79c
+Создан заказ: 298564
+Сейчас в разделе 'Готовы': []
+Сейчас в разделе 'Готовы': []
+Сейчас в разделе 'Готовы': []
+Сейчас в разделе 'Готовы': ['Все текущие заказы готовы!']
+Сейчас в разделе 'Готовы': ['Все текущие заказы готовы!']
+Сейчас в разделе 'Готовы': ['0298564']
