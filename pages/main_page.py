@@ -1,57 +1,57 @@
 import allure
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.action_chains import ActionChains
 from locators import ConstructorPageLocators
+from pages.base_page import BasePage
 
-class MainPage:
+
+class MainPage(BasePage):
     URL = "https://stellarburgers.nomoreparties.site/"
-
-    def __init__(self, driver):
-        self.driver = driver
 
     @allure.step("Открываем главную страницу Stellar Burgers")
     def open(self):
-        self.driver.get(self.URL)
+        self.open_url(self.URL)
 
     @allure.step("Кликаем на кнопку 'Конструктор'")
     def click_constructor(self):
-        WebDriverWait(self.driver, 10).until(
-            EC.element_to_be_clickable(ConstructorPageLocators.CONSTRUCTOR_BTN)
-        ).click()
+        self.wait_for_clickable(ConstructorPageLocators.CONSTRUCTOR_BTN).click()
 
-    @allure.step("Кликаем на кнопку 'Лента Заказов'")
+    @allure.step("Кликаем на кнопку 'Лента заказов'")
     def click_order_feed(self):
-        element = WebDriverWait(self.driver, 10).until(
-            EC.element_to_be_clickable(ConstructorPageLocators.ORDER_FEED_BTN)
-        )
+        element = self.wait_for_clickable(ConstructorPageLocators.ORDER_FEED_BTN)
         try:
             element.click()
         except:
-            # запасной вариант на случай перекрытия
-            self.driver.execute_script("arguments[0].click();", element)
+            self.click_via_js(element)
 
     @allure.step("Кликаем на первый ингредиент")
     def click_first_ingredient(self):
-        WebDriverWait(self.driver, 10).until(
-            EC.element_to_be_clickable(ConstructorPageLocators.FIRST_INGREDIENT)
-        ).click()
+        self.wait_for_clickable(ConstructorPageLocators.FIRST_INGREDIENT).click()
 
-    @allure.step("Проверяем видимость модалки ингредиента")
+    @allure.step("Проверяем, что модалка ингредиента видна")
     def is_modal_visible(self):
-        try:
-            WebDriverWait(self.driver, 10).until(
-                EC.visibility_of_element_located(ConstructorPageLocators.MODAL)
-            )
-            return True
-        except:
-            return False
+        return self.is_visible(ConstructorPageLocators.MODAL)
 
     @allure.step("Закрываем модалку ингредиента крестиком")
     def close_modal(self):
-        WebDriverWait(self.driver, 10).until(
-            EC.element_to_be_clickable(ConstructorPageLocators.MODAL_CLOSE_BTN)
-        ).click()
-        WebDriverWait(self.driver, 5).until(
-            EC.invisibility_of_element_located(ConstructorPageLocators.MODAL)
-        )
+        self.wait_for_clickable(ConstructorPageLocators.MODAL_CLOSE_BTN).click()
+        self.wait_for_invisible(ConstructorPageLocators.MODAL)
+
+    @allure.step("Перетаскиваем булку в конструктор")
+    def drag_bun_to_constructor(self):
+        bun = self.wait_for_clickable(ConstructorPageLocators.BUN)
+        basket = self.wait_for_visible(ConstructorPageLocators.BASKET)
+        self.drag_and_drop(bun, basket)
+        return bun
+
+    @allure.step("Получаем текущее значение счётчика ингредиента")
+    def get_counter_value(self, element):
+        counter = self.find_child_element(element, ConstructorPageLocators.COUNTER)
+        return counter.text
+
+    @allure.step("Ждём пока значение счётчика изменится")
+    def wait_for_counter_value(self, element, expected_value):
+        def counter_updated(_):
+            return self.get_counter_value(element) == expected_value
+
+        self.wait_until(counter_updated, f"Счётчик не стал {expected_value}")
+        return self.get_counter_value(element)

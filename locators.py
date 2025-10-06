@@ -18,7 +18,8 @@ class ConstructorPageLocators:
     FIRST_INGREDIENT = (By.CSS_SELECTOR, "a.BurgerIngredient_ingredient__1TVf6")
     MODAL = (By.CLASS_NAME, "Modal_modal__contentBox__sCy8X")
     MODAL_CLOSE_BTN = (By.CLASS_NAME, "Modal_modal__close_modified__3V5XS")
-
+    COUNTER = (By.CSS_SELECTOR, ".counter_counter__num__3nue1")
+    
 class ModalLocators:
     MODAL_CONTENT = (By.CSS_SELECTOR, "div.Modal_modal__contentBox__sCy8X")
     ORDER_NUMBER = (By.CSS_SELECTOR, "div.Modal_modal__contentBox__sCy8X h2")
